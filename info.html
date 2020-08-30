@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>可视化数据展示</title>
+
+    <!-- slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="css/owl.carousel.min.css" />
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link href="css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="css/responsive.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+</head>
+
+<body class="sub_page">
+
+    <section class="nav_section">
+        <div style="position: absolute;left:0px;width:80px;top:-6px;"><img style="width:100%;display:block;"
+            src="images/layout.png" alt=""></div>
+        <div style="position: absolute;left:100px;width:120px;top:14px;"><img style="width:100%;display:block;"
+                src="images/logo.png" alt=""></div>
+        <div class="container">
+
+            <div class="custom_nav2">
+                <nav class="navbar navbar-expand custom_nav-container ">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon">111</span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="d-flex  flex-column flex-lg-row align-items-center">
+
+                            <ul class="navbar-nav  ">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="index.html">首页<span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="about.html">About </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Login</a>
+                                </li>
+                            </ul>
+                            <!-- <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
+                <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit"></button>
+              </form> -->
+
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div style="position: absolute;right:40px;width:32px;top:16px;"><img style="width:100%;display:block;"
+                src="images/person.png" alt=""></div>
+
+    </section>
+
+    <!-- end nav section -->
+
+
+    <!-- client section -->
+
+    <section class="client_section layout_padding">
+        <div class="contain">
+
+
+
+
+
+
+        </div>
+
+
+    </section>
+    <script type="text/javascript">
+        function deleteInfo(id) {
+            console.log(1)
+            $.ajax({
+                url: 'http://new.wzzd.cn/rest',
+                type: 'POST',
+                data: { method: 'data.Dataset.delete', id: id },
+                crossDomain: true,
+                success: function (data) {
+
+
+                    console.log(data)
+
+                }
+            });
+
+        }
+        (function getFiles() {
+
+            // -SH 接口地址根据实际需要修改
+            var str = '';
+            $.ajax({
+                url: 'http://new.wzzd.cn/rest',
+                type: 'GET',
+                data: { method: 'data.Dataset.index' },
+                success: function (data) {
+
+                    var data = eval("(" + data + ")")
+                    var dataList = data.data
+                    // var list = JSON.parse(data1)
+                    //console.log(list)
+                    //var name = data1[0].name
+                    //console.log(name)
+
+                    for (let i in dataList) {
+                        //var ls = createList[i]; 
+                        str += '<div class="container_list" >' +
+                            '<div class="editMask">' +
+                            '<div class="edit">' + "编辑" + '</div>' +
+                            '<div class="pre" onclick="deleteInfo(' + dataList[i].id + ')">' + "预览" + '</div>' +
+                            '</div>' +
+                            '<div class="container_bj"></div>' +
+
+
+
+                            '<div class="container_footer">' +
+                            '<div class="rename_box">' + dataList[i].name + '</div>' +
+                            '<div class="info_time">' + dataList[i].create_time + '</div>' +
+                            '</div>' +
+                            '</div>';
+                        /* str += "<div>测试："+data1[i].name+"</div>"; */
+                    }
+                    $('#container_box').html(str);
+                    //document.getElementById('container_box').innerHTML = str;
+
+                },
+                error: function (jqXHR) {
+                    console.log(jqXHR);
+                }
+            });
+        })()
+        $(function () {
+            $(".add_new").click(function () {
+                $(".my_dialog").show()
+            })
+            $(".quxiao_left").click(function () {
+                $(".my_dialog").hide()
+            })
+
+            $(".save_right").click(function () {
+                var name = $('.dialog_name').val();
+                console.log(name)
+                $.ajax({
+                    url: 'http://new.wzzd.cn/rest',
+                    type: 'POST',
+                    data: { method: 'data.Dataset.addSet', name: name },
+                    crossDomain: true,
+                    success: function (data) {
+                        console.log("请求成功")
+                        $(".my_dialog").hide()
+
+                    }
+                });
+
+            });
+        });
+    </script>
+
+    <style>
+        .small_box {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .quxiao_left {
+            width: 100px;
+            height: 40px;
+            color: white;
+            background-color: #323232;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .save_right {
+            width: 100px;
+            height: 40px;
+            color: white;
+            background-color: #323232;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .pre {
+            cursor: pointer;
+            color: white;
+        }
+
+        .my_dialog {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: auto;
+            margin: 0;
+            /*   margin-top:36vh; */
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        .dialog {
+            position: relative;
+            margin: 0 auto 80px;
+            border-radius: 2px;
+            margin-top: 36vh;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+            box-sizing: border-box;
+            width: 30%;
+            height: 30%;
+            background-color: #1b1b1b;
+        }
+
+        .container_main {
+            position: relative;
+            padding: 3.7vh 12.64vw 0 15.4vw;
+            top: -8vw;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+
+        }
+
+        .container_main_left {
+            display: flex;
+            align-items: center;
+            height: 2.8vh;
+        }
+
+        .span_header {
+            padding-left: .3vw;
+            padding-right: .7vw;
+            height: .9vw;
+            font-size: .73vw;
+            color: #fff;
+            line-height: .9vw;
+        }
+
+        .name {
+            display: block;
+            width: 2.97vw;
+            height: 1.04vw;
+            line-height: 1.04vw;
+            text-align: center;
+            background-color: hsla(0, 0%, 100%, .1);
+            font-size: .63vw;
+            color: hsla(0, 0%, 100%, .6);
+            border-radius: .1vw;
+            margin-right: .52vw;
+        }
+
+        .container_body {
+            position: relative;
+            padding: 0 14.64vw 0 15.4vw;
+            top: -7.6vw;
+            color: white;
+            display: flex;
+            flex-flow: row wrap;
+
+        }
+
+        .add_new {
+            width: 13.13vw;
+            height: 9.27vw;
+            margin-top: 1vw;
+            margin-right: 1vw;
+            background-color: #333435;
+            font-size: .73vw;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+
+        }
+
+        .add_new:hover {
+            border: 1px solid #23b8bc;
+            color: #23b8bc
+        }
+
+        .container_list {
+            position: relative;
+            width: 13.13vw;
+            height: 9.27vw;
+            margin-top: 1vw;
+            margin-right: 1vw;
+            background-color: #282829;
+            float: left;
+
+
+
+
+
+        }
+
+        .container_box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+
+
+
+        }
+
+        .editMask {
+            display: flex;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .2);
+        }
+
+        .container_list:hover .editMask {
+            display: block;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .2);
+        }
+
+        .edit {
+            width: 4.79vw;
+            height: 1.35vw;
+            text-align: center;
+            line-height: 1.35vw;
+            background-color: #23b8bc;
+            margin-bottom: 1.04vw;
+            cursor: pointer;
+            border-radius: 2px;
+            color: white;
+        }
+
+        .container_bj {
+            width: 13.13vw;
+            height: 9.27vw;
+
+        }
+
+        .container_bj img {
+            width: 13.13vw;
+            height: 9.27vw;
+        }
+
+        .container_footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: .63vw;
+            position: absolute;
+            width: 13.13vw;
+            left: 0;
+            bottom: 0;
+            height: 1.9vw;
+            color: #fff;
+            padding: 0 .52vw 0 .78vw;
+            background-color: #333435;
+        }
+
+        .rename_box {
+            width: 68%;
+            color: hsla(0, 0%, 100%, .8);
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .info_time {
+            color: hsla(0, 0%, 100%, .4);
+            font-size: .52vw;
+            transform: scale(.8);
+            transform-origin: right;
+        }
+
+        .client_section .contain {
+            height: 100%;
+            width: 100%;
+
+        }
+
+        .zhanwei {
+            position: absolute;
+            ;
+            height: 40vh;
+        }
+
+        .text {
+            /*  position:relative; */
+
+
+        }
+
+        .client_section .contain .heading_container {
+            position: relative;
+            ;
+            width: 100vw;
+            height: 20.83vw;
+        }
+
+        .client_section .contain .heading_container img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+    <!--  <script type="text/javascript" src="js/bootstrap.js"></script> -->
+    <script type="text/javascript" src="js/custom.js"></script>
+
+</body>
+
+</html>
