@@ -97,19 +97,20 @@
         <div class="container_body" id="container_body">
           <div class="add_new" id="add_new">
             新增
-            <div class="pre">预览</div>
+
           </div>
 
           <div id="container_box">
-            <div id="container_list" class="container_list">
-              
+            <div id="container_list" class="container_list" onclick="deleteInfo()">
+
               <div class="editMask">
                 <div class="edit">编辑</div>
-                <!-- <div class="pre">预览</div> -->
+                <div class="pre">预览</div>
               </div>
               <div class="container_bj">
                 <img src="images/container_bj.png" alt="">
               </div>
+
               <div class="container_footer">
                 <div class="rename_box">1312</div>
                 <div class="info_time">13123</div>
@@ -159,6 +160,22 @@
 
   </section>
   <script type="text/javascript">
+    function deleteInfo(id) {
+      console.log(1)
+      $.ajax({
+        url: 'http://new.wzzd.cn/rest',
+        type: 'POST',
+        data: { method: 'data.Dataset.delete', id: id },
+        crossDomain: true,
+        success: function (data) {
+
+
+          console.log(data)
+
+        }
+      });
+
+    }
     (function getFiles() {
 
       // -SH 接口地址根据实际需要修改
@@ -170,28 +187,26 @@
         success: function (data) {
 
           var data = eval("(" + data + ")")
-          //var createList = dataObj.data;
-          // console.log(createList)
-          //console.log(data)
-          var data1 = data.data
+          var dataList = data.data
           // var list = JSON.parse(data1)
           //console.log(list)
           //var name = data1[0].name
           //console.log(name)
 
-          for (let i in data1) {
+          for (let i in dataList) {
             //var ls = createList[i]; 
-            str += '<div class="container_list">' +
+            str += '<div class="container_list" >' +
               '<div class="editMask">' +
               '<div class="edit">' + "编辑" + '</div>' +
-              '<div class="pre">' + "预览" + '</div>' +
+              '<div class="pre" onclick="deleteInfo(' + dataList[i].id + ')">' + "预览" + '</div>' +
               '</div>' +
               '<div class="container_bj"></div>' +
 
 
+
               '<div class="container_footer">' +
-              '<div class="rename_box">' + data1[i].name + '</div>' +
-              '<div class="info_time">' + data1[i].create_time + '</div>' +
+              '<div class="rename_box">' + dataList[i].name + '</div>' +
+              '<div class="info_time">' + dataList[i].create_time + '</div>' +
               '</div>' +
               '</div>';
             /* str += "<div>测试："+data1[i].name+"</div>"; */
@@ -213,21 +228,6 @@
         $(".my_dialog").hide()
       })
 
-      $(".pre").click(function () {
-        console.log(1)
-        $.ajax({
-          url: 'http://new.wzzd.cn/rest',
-          type: 'POST',
-          data: { method: 'data.Dataset.delete', id: 1 },
-          crossDomain: true,
-          success: function (data) {
-
-
-            console.log(data)
-
-          }
-        });
-      });
       $(".save_right").click(function () {
         var name = $('.dialog_name').val();
         console.log(name)
@@ -244,20 +244,6 @@
         });
 
       });
-      /*         $(".my-btn-blue").click(function () {
-                  console.log(1)
-                 $.ajax({
-                      url: 'http://new.wzzd.cn/rest',
-                      type: 'POST',
-                      data: { method: 'data.Dataset.addSet', 'name': 'test1' },
-                      crossDomain: true,
-                      success: function (data) {
-                          console.log("请求成功")
-                          $(".my_dialog").hide();
-                      }
-                  });
-      
-              }); */
     });
   </script>
 
@@ -291,7 +277,7 @@
 
     .pre {
       cursor: pointer;
-      color:white;
+      color: white;
     }
 
     .my_dialog {
